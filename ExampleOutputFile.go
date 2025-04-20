@@ -6,76 +6,98 @@ import (
 )
 
 type Student struct {
-	Name  string
-	Group string
-	Grade float64
+	name  string
+	group string
+	grade float64
 }
 
-func compareStudents(a, b Student) bool {
-	return a.Grade > b.Grade
+func compareStudents(a Student, b Student) bool {
+	return a.grade > b.grade
+
 }
 
 func output(students []Student, index int) {
-	fmt.Printf("%s %.2f %s\n", students[index].Name, students[index].Grade, students[index].Group)
+	fmt.Println(students[index].name, " ", students[index].grade, " ", students[index].group)
+
 }
 
-func calculateStatistics(students []Student, showAboveAverage bool) {
-	if len(students) == 0 {
+func calculateStatistics(students []Student, count int, showAboveAverage bool) {
+	if count == 0 {
 		fmt.Println("Нет студентов для анализа.")
+
 		return
-	}
 
-	sum := 0.0
-	for _, student := range students {
-		sum += student.Grade
 	}
+	var sum float64 = 0.000000
+	for i := 0; i < count; i++ {
+		sum += students[i].grade
 
-	average := sum / float64(len(students))
-	fmt.Printf("\nСредняя оценка: %.2f\n", average)
+	}
+	var average float64
+	average = sum / float64(count)
+	fmt.Println("\nСредняя оценка: ", average)
 
 	if showAboveAverage {
 		fmt.Println("Студенты с оценками выше средней:")
-		for i, student := range students {
-			if student.Grade > average {
+
+		for i := 0; i < count; i++ {
+			if students[i].grade > average {
 				output(students, i)
+
 			}
+
 		}
-	} else {
-		fmt.Println("Студенты с оценками ниже или равными средней:")
-		for i, student := range students {
-			if student.Grade <= average {
-				output(students, i)
-			}
-		}
+
 	}
+	if !showAboveAverage {
+		fmt.Println("Студенты с оценками ниже или равными средней:")
+
+		for i := 0; i < count; i++ {
+			if students[i].grade <= average {
+				output(students, i)
+
+			}
+
+		}
+
+	}
+
 }
 
 func main() {
+
 	var n int
-	fmt.Print("Введите количество студентов: ")
+	fmt.Println("Введите количество студентов: ")
+
 	for {
 		_, err := fmt.Scan(&n)
+
 		if err == nil && n > 0 {
 			break
+
 		}
+
 		fmt.Println("Ошибка! Введите корректное положительное число: ")
+
 		fmt.Scanln()
-	}
 
+	}
 	students := make([]Student, n)
-
 	for i := 0; i < n; i++ {
-		fmt.Print("Введите имя, группу и оценку студента: ")
-		fmt.Scan(&students[i].Name, &students[i].Group, &students[i].Grade)
-	}
+		fmt.Println("Введите имя, группу и оценку студента:")
 
+		fmt.Scan(&students[i].name, &students[i].group, &students[i].grade)
+
+	}
 	sort.Slice(students, func(i, j int) bool {
+
 		return compareStudents(students[i], students[j])
 	})
-
 	var showAboveAverage bool
-	fmt.Print("\n(1 - Студенты с оценкой выше средней, 0 - Студенты с оценкой ниже или равной средней): ")
+	fmt.Println("\n(1 - Студенты с оценкой выше средней, 0 - Студенты с оценкой ниже или равной средней): ")
+
 	fmt.Scan(&showAboveAverage)
 
-	calculateStatistics(students, showAboveAverage)
+	calculateStatistics(students, n, showAboveAverage)
+
 }
