@@ -24,23 +24,25 @@ void calculateStatistics(const Student* students, int count, bool showAboveAvera
     }
 
     float sum = 0.0;
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < count; i++) {
         sum += students[i].grade;
     }
 
-    float average = sum / count;
+    float average;
+    average = sum / float(count);
     cout << "\nСредняя оценка: " << average << endl;
 
     if (showAboveAverage) {
         cout << "Студенты с оценками выше средней:" << endl;
-        for (int i = 0; i < count; ++i) {
+        for (int i = 0; i < count; i++) {
             if (students[i].grade > average) {
                 output(students, i);
             }
         }
-    } else {
+    } 
+    if (!showAboveAverage) {
         cout << "Студенты с оценками ниже или равными средней:" << endl;
-        for (int i = 0; i < count; ++i) {
+        for (int i = 0; i < count; i++) {
             if (students[i].grade <= average) {
                 output(students, i);
             }
@@ -60,7 +62,7 @@ int main() {
 
     Student* students = new Student[n];
 
-    for (int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; i++) {
         cout << "Введите имя, группу и оценку студента:";
         cin >> students[i].name >> students[i].group >> students[i].grade;
     }
